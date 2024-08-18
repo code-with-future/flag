@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ATM Withdrawal System</title>
+    <link
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        padding-top: 50px;
+        background-color: #f8f9fa;
+      }
+      .container {
+        max-width: 600px;
+        margin: auto;
+      }
+      .result {
+        margin-top: 20px;
+      }
+      table {
+        width: 100%;
+      }
+      th,
+      td {
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2 class="text-center">ATM Withdrawal System</h2>
+      <form id="withdrawalForm">
+        <div class="form-group">
+          <label for="amount">Enter Amount:</label>
+          <input type="number" class="form-control" id="amount" required />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">
+          Withdraw
+        </button>
+      </form>
+      <div class="result" id="result"></div>
+    </div>
+
+    <script>
+      document
+        .getElementById("withdrawalForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          // Get the amount from the input field
+          let amount = parseInt(document.getElementById("amount").value);
+
+          // Define the note denominations
+          const denominations = [500, 200, 100, 50, 20, 10];
+          let resultHTML =
+            '<table class="table table-bordered"><thead><tr><th>Denomination</th><th>Number of Notes</th></tr></thead><tbody>';
+
+          // Calculate the number of notes for each denomination
+          for (let denom of denominations) {
+            if (amount >= denom) {
+              const numNotes = Math.floor(amount / denom);
+              amount -= numNotes * denom;
+              resultHTML += `<tr><td>RS. ${denom}</td><td>${numNotes}</td></tr>`;
+            }
+          }
+
+          // Close the table
+          resultHTML += "</tbody></table>";
+
+          // Show the result
+          document.getElementById("result").innerHTML =
+            resultHTML || "<p>No valid denomination available.</p>";
+        });
+    </script>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>

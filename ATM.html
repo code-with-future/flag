@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ATM System</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background-color: #f8f9fa;
+      }
+      .container {
+        max-width: 500px;
+        margin-top: 50px;
+      }
+      .card {
+        padding: 20px;
+      }
+      .alert {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="card">
+        <h2 class="text-center">ATM System</h2>
+        <div id="message" class="alert alert-danger"></div>
+        <form id="atm-form">
+          <div class="form-group">
+            <label for="transaction-type">Transaction Type:</label>
+            <select id="transaction-type" class="form-control" required>
+              <option value="" disabled selected>
+                Select transaction type
+              </option>
+              <option value="withdraw">Withdraw</option>
+              <option value="deposit">Deposit</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="amount">Amount:</label>
+            <input
+              type="number"
+              id="amount"
+              class="form-control"
+              placeholder="Enter amount"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">
+            Submit
+          </button>
+        </form>
+        <h4 class="text-center mt-4">
+          Balance: $<span id="balance">1000</span>
+        </h4>
+      </div>
+    </div>
+
+    <!-- Bootstrap and jQuery JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+      document
+        .getElementById("atm-form")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          var transactionType =
+            document.getElementById("transaction-type").value;
+          var amount = parseFloat(document.getElementById("amount").value);
+          var balanceElement = document.getElementById("balance");
+          var messageElement = document.getElementById("message");
+          var balance = parseFloat(balanceElement.textContent);
+
+          // Reset message
+          messageElement.style.display = "none";
+
+          // Validate the amount
+          if (isNaN(amount) || amount <= 0) {
+            messageElement.textContent = "Please enter a valid amount.";
+            messageElement.style.display = "block";
+            return;
+          }
+
+          if (transactionType === "withdraw") {
+            if (amount > balance) {
+              messageElement.textContent = "Insufficient funds.";
+              messageElement.style.display = "block";
+              return;
+            }
+            // Process the withdrawal
+            balance -= amount;
+          } else if (transactionType === "deposit") {
+            // Process the deposit
+            balance += amount;
+          }
+
+          balanceElement.textContent = balance.toFixed(2);
+          document.getElementById("amount").value = ""; // Clear input
+          document.getElementById("transaction-type").value = ""; // Reset selection
+        });
+    </script>
+  </body>
+</html>
